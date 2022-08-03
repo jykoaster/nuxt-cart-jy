@@ -31,4 +31,5 @@ interface itemFormat {
   price: number
   quantity: number
   discount?: number
+  src?: string
 }

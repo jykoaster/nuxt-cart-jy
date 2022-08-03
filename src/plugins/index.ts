@@ -9,70 +9,85 @@ const myPlugin: Plugin = (ctx, inject) => {
   const storage = new Storage(ctx)
   const allFn = {
     addItem(data: itemFormat) {
-      const index = getIndex(storage.state.cart.items, data.id)
-      if (index !== -1) return false
-      const cartItems = storage.state.cart.items.slice(0)
-      const total = data.discount
-        ? data.price * data.discount * data.quantity
-        : data.price * data.quantity
-      cartItems.push(data)
-      const cart = {
-        ...storage.state.cart,
-        items: cartItems,
-        quantity: storage.state.cart.quantity + data.quantity,
-        total: storage.state.cart.total + total,
+      try {
+        const index = getIndex(storage.state.cart.items, data.id)
+        if (index !== -1)
+          return console.error(`[nuxt-cart-jy] id '${data.id}' was existed`)
+        const cartItems = storage.state.cart.items.slice(0)
+        const total = data.discount
+          ? data.price * data.discount * data.quantity
+          : data.price * data.quantity
+        cartItems.push(data)
+        const cart = {
+          ...storage.state.cart,
+          items: cartItems,
+          quantity: storage.state.cart.quantity + data.quantity,
+          total: storage.state.cart.total + total,
+        }
+        storage.setUniversal('cart', cart)
+      } catch (error) {
+        console.error(error)
       }
-      storage.setUniversal('cart', cart)
-      return true
     },
     editItem(id: string, data: itemFormat) {
-      const index = getIndex(storage.state.cart.items, id)
-      if (index === -1) return false
-      const cartItems = storage.state.cart.items.slice(0)
-      const total = data.discount
-        ? data.price * data.discount * data.quantity
-        : data.price * data.quantity
-      const oldTotal = cartItems[index].discount
-        ? cartItems[index].price *
-          cartItems[index].discount *
-          cartItems[index].quantity
-        : cartItems[index].price * cartItems[index].quantity
-      const newTotal = storage.state.cart.total - oldTotal + total
-      const newQuantity =
-        storage.state.cart.quantity -
-        storage.state.cart.items[index].quantity +
-        data.quantity
-      cartItems[index] = data
-      const cart = {
-        ...storage.state.cart,
-        items: cartItems,
-        quantity: newQuantity,
-        total: newTotal,
+      try {
+        data.quantity = Number(data.quantity)
+        if (isNaN(data.quantity))
+          return console.error(`[nuxt-cart-jy] quantity type must be 'number'`)
+        const index = getIndex(storage.state.cart.items, id)
+        if (index === -1)
+          return console.error(`[nuxt-cart-jy] id '${id}' is not exist`)
+        const cartItems = storage.state.cart.items.slice(0)
+        const total = data.discount
+          ? data.price * data.discount * data.quantity
+          : data.price * data.quantity
+        const oldTotal = cartItems[index].discount
+          ? cartItems[index].price *
+            cartItems[index].discount *
+            cartItems[index].quantity
+          : cartItems[index].price * cartItems[index].quantity
+        const newTotal = storage.state.cart.total - oldTotal + total
+        const newQuantity =
+          storage.state.cart.quantity -
+          storage.state.cart.items[index].quantity +
+          data.quantity
+        cartItems[index] = data
+        const cart = {
+          ...storage.state.cart,
+          items: cartItems,
+          quantity: newQuantity,
+          total: newTotal,
+        }
+        storage.setUniversal('cart', cart)
+      } catch (error) {
+        console.error(error)
       }
-      storage.setUniversal('cart', cart)
-      return true
     },
     removeItem(id: string) {
-      const index = getIndex(storage.state.cart.items, id)
-      if (index === -1) return false
-      const cartItems = storage.state.cart.items.slice(0)
-      const oldTotal = cartItems[index].discount
-        ? cartItems[index].price *
-          cartItems[index].discount *
-          cartItems[index].quantity
-        : cartItems[index].price * cartItems[index].quantity
-      const newTotal = storage.state.cart.total - oldTotal
-      const newQuantity =
-        storage.state.cart.quantity - storage.state.cart.items[index].quantity
-      cartItems.splice(index, 1)
-      const cart = {
-        ...storage.state.cart,
-        items: cartItems,
-        quantity: newQuantity,
-        total: newTotal,
+      try {
+        const index = getIndex(storage.state.cart.items, id)
+        if (index === -1)
+          return console.error(`[nuxt-cart-jy] id '${id}' is not exist`)
+        const cartItems = storage.state.cart.items.slice(0)
+        const oldTotal = cartItems[index].discount
+          ? cartItems[index].price *
+            cartItems[index].discount *
+            cartItems[index].quantity
+          : cartItems[index].price * cartItems[index].quantity
+        const newTotal = storage.state.cart.total - oldTotal
+        const newQuantity =
+          storage.state.cart.quantity - storage.state.cart.items[index].quantity
+        cartItems.splice(index, 1)
+        const cart = {
+          ...storage.state.cart,
+          items: cartItems,
+          quantity: newQuantity,
+          total: newTotal,
+        }
+        storage.setUniversal('cart', cart)
+      } catch (error) {
+        console.error(error)
       }
-      storage.setUniversal('cart', cart)
-      return true
     },
     setCart(key: string, value: any) {
       if (!storage.state.cart[key])

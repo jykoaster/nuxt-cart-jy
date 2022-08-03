@@ -30,17 +30,17 @@ When you use with this package, it will auto inject `$cartCustom` in your contex
 
 ## `addItem(data:{id:string,price:number,quantity: number,discount?: number})`
 
-- return:`Boolean`
+- return:`Void`
 - Description:Add new items
 
 ## `editItem(id: string, data:{id:string,price:number,quantity: number,discount?: number})`
 
-- return:`Boolean`
+- return:`Void`
 - Description:Edit exist items by `id`
 
 ## `removeItem(id: string)`
 
-- return:`Boolean`
+- return:`Void`
 - Description:Remove exist items by `id`
 
 ## `setCart(key:string,value:any)`
