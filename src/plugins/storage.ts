@@ -1,6 +1,6 @@
 import type { Context } from '@nuxt/types'
 import cookie from 'cookie'
-import Vue from 'vue'
+import { set } from 'vue'
 import { isUnset } from '../util'
 const options = JSON.parse(`<%= JSON.stringify(options) %>`)
 export class Storage {
@@ -63,7 +63,7 @@ export class Storage {
   }
 
   _initState(): void {
-    Vue.set(this, '_state', {})
+    set(this, '_state', {})
 
     this._useVuex = !!this.ctx.store
     if (this._useVuex) {
@@ -74,7 +74,7 @@ export class Storage {
         }),
         mutations: {
           SET(state: any, payload: any) {
-            Vue.set(state, payload.key, payload.value)
+            set(state, payload.key, payload.value)
           },
         },
       }
@@ -85,7 +85,7 @@ export class Storage {
 
       this.state = this.ctx.store.state.cartCustom
     } else {
-      Vue.set(this, 'state', {})
+      set(this, 'state', {})
 
       // eslint-disable-next-line no-console
       console.warn(
@@ -105,14 +105,14 @@ export class Storage {
 
   setState<V extends unknown>(key: string, value: V): V {
     if (key[0] === '_') {
-      Vue.set(this._state, key, value)
+      set(this._state, key, value)
     } else if (this._useVuex) {
       this.ctx.store.commit('cartCustom/SET', {
         key,
         value,
       })
     } else {
-      Vue.set(this.state, key, value)
+      set(this.state, key, value)
     }
 
     return value

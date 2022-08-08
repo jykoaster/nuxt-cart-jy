@@ -28,12 +28,12 @@ The module will record your cart data ,and auto calculate result after data was 
 
 When you use with this package, it will auto inject `$cartCustom` in your context
 
-## `addItem(data:{id:string,price:number,quantity: number,discount?: number})`
+## `addItem(data:{id:string,price:number,quantity:number,src:string,discount?:number})`
 
 - return:`Void`
 - Description:Add new items
 
-## `editItem(id: string, data:{id:string,price:number,quantity: number,discount?: number})`
+## `editItem(id: string, data:{id:string,price:number,quantity:number,src:string,discount?:number})`
 
 - return:`Void`
 - Description:Edit exist items by `id`
