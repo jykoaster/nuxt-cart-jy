@@ -20,6 +20,18 @@ cartCustom:{
 }
 ```
 
+## With Typescript
+
+```
+// tsconfig.json
+
+types:[
+  "nuxt-cart-jy"
+]
+
+
+```
+
 # Usage
 
 The module will record your cart data ,and auto calculate result after data was changed. It have some base properties , and you can custom your own properties.
