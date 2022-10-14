@@ -90,9 +90,9 @@ const myPlugin: Plugin = (ctx, inject) => {
       }
     },
     setCart(key: string, value: any) {
-      if (!storage.state.cart[key])
+      if (typeof(storage.state.cart[key])==='undefined')
         return console.error(
-          `[nuxt-cart-jy] You haven't set property ${key} when cart was initail`
+          `[nuxt-cart-jy] You haven't set property ${key} when cart was initial`
         )
       const obj = JSON.parse(JSON.stringify(storage.state.cart))
       obj[key] = value
