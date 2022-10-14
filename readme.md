@@ -1,3 +1,5 @@
+require vue version >=2.7
+
 # Get Started
 
 Set module in `nuxt.config.js`
