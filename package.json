@@ -1,6 +1,6 @@
 {
   "name": "nuxt-cart-jy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "src/module.ts",
   "types": "index.d.ts",
   "dependencies": {
